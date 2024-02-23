@@ -14,6 +14,7 @@ import {
     validPassword,
     validPhone,
 } from "../../regex";
+import axios from "axios";
 
 interface User {
     fullName: string;
@@ -49,10 +50,34 @@ const CreateUserForm: React.FC = () => {
     const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = useState(false);
     
     const [isSubmitTriggered, setIsSubmitTriggered] = useState(false);
+    const [responseData, setResponseData] = useState(null);
+
+    const sendRequest = () => {
+        const dateOfBirth = 
+            user.birthdate.day?.toString() ?? ''
+            + user.birthdate.month?.toString() ?? ''
+            + user.birthdate.year?.toString() ?? '';
+        const data = {
+            'full_name': user.fullName,
+            'contact_number': user.contactNumber,
+            'email': user.emailAddress,
+            'date_of_birth': user.birthdate,
+            'password': user.password,
+        };
+        axios.post('https://fullstack-test-navy.vercel.app/api/users/create', data)
+        .then(response => {
+            console.log('Success:', response.data);
+            setResponseData(response.data); // Set response data in state
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
     useEffect(() => {
         if (isSubmitTriggered && validate()) {
             console.log(`VALIDATION SUCCESS! SENDING POST!`);
+            sendRequest();
         }
         setIsSubmitTriggered(false);
     }, [isSubmitTriggered]);
@@ -142,6 +167,17 @@ const CreateUserForm: React.FC = () => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        console.log(`SUBMIT TRIGGERED!`);
+        e.preventDefault();
+        validate();
+        setIsSubmitTriggered(true);
+    };
+
+    const handleCancel = () => {
+        console.log("Cancel");
+    };
+
     const setBirthdate = ({
         day,
         month,
@@ -159,17 +195,6 @@ const CreateUserForm: React.FC = () => {
                 year,
             },
         });
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        console.log(`SUBMIT TRIGGERED!`);
-        e.preventDefault();
-        validate();
-        setIsSubmitTriggered(true);
-    };
-
-    const handleCancel = () => {
-        console.log("Cancel");
     };
 
     return (
