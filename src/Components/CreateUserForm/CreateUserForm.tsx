@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     TextField,
     Button,
@@ -46,8 +46,16 @@ const CreateUserForm: React.FC = () => {
     const [isBirthdateInvalid, setIsBirthdateInvalid] = useState(false);
     const [isEmailInvalid, setIsEmailInvalid] = useState(false);
     const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
-    const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] =
-        useState(false);
+    const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = useState(false);
+    
+    const [isSubmitTriggered, setIsSubmitTriggered] = useState(false);
+
+    useEffect(() => {
+        if (isSubmitTriggered && validate()) {
+            console.log(`VALIDATION SUCCESS! SENDING POST!`);
+        }
+        setIsSubmitTriggered(false);
+    }, [isSubmitTriggered]);
 
     const validate = () => {
         validateFullName(user.fullName);
@@ -156,10 +164,8 @@ const CreateUserForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         console.log(`SUBMIT TRIGGERED!`);
         e.preventDefault();
-        if (validate()) {
-            console.log(`VALIDATION SUCCESSFUL!`);
-            console.log(user); // You can handle form submission here
-        }
+        validate();
+        setIsSubmitTriggered(true);
     };
 
     const handleCancel = () => {
