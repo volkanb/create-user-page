@@ -99,8 +99,8 @@ const CreateUserForm: React.FC = () => {
     useEffect(() => {
         if (isSubmitTriggered && validate()) {
             sendRequest();
+            setIsSubmitTriggered(false);
         }
-        setIsSubmitTriggered(false);
     }, [isSubmitTriggered]);
 
     const validate = () => {
@@ -189,6 +189,7 @@ const CreateUserForm: React.FC = () => {
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        console.log(`SUBMIT`);
         e.preventDefault();
         validate();
         setIsSubmitTriggered(true);
