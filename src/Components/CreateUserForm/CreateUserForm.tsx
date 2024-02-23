@@ -6,6 +6,8 @@ import {
     Typography,
     Container,
     Paper,
+    Alert,
+    Snackbar,
 } from "@mui/material";
 import BirthdateSelector from "../BirthdateSelector/BirthdateSelector";
 import {
@@ -47,36 +49,55 @@ const CreateUserForm: React.FC = () => {
     const [isBirthdateInvalid, setIsBirthdateInvalid] = useState(false);
     const [isEmailInvalid, setIsEmailInvalid] = useState(false);
     const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
-    const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = useState(false);
-    
+    const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] =
+        useState(false);
+
     const [isSubmitTriggered, setIsSubmitTriggered] = useState(false);
     const [responseData, setResponseData] = useState(null);
+    const [responseMessage, setResponseMessage] = useState("");
+    const [openAlert, setOpenAlert] = useState(false);
+
+    const [severity, setSeverity] = useState<"success" | "error">("success");
+
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenAlert(false);
+    };
 
     const sendRequest = () => {
-        const dateOfBirth = 
-            user.birthdate.day?.toString() ?? ''
-            + user.birthdate.month?.toString() ?? ''
-            + user.birthdate.year?.toString() ?? '';
         const data = {
-            'full_name': user.fullName,
-            'contact_number': user.contactNumber,
-            'email': user.emailAddress,
-            'date_of_birth': user.birthdate,
-            'password': user.password,
+            full_name: user.fullName,
+            contact_number: user.contactNumber,
+            email: user.emailAddress,
+            date_of_birth: user.birthdate,
+            password: user.password,
         };
-        axios.post('https://fullstack-test-navy.vercel.app/api/users/create', data)
-        .then(response => {
-            console.log('Success:', response.data);
-            setResponseData(response.data); // Set response data in state
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+        axios
+            .post(
+                "https://fullstack-test-navy.vercel.app/api/users/create",
+                data
+            )
+            .then((response) => {
+                setResponseData(response.data);
+                setSeverity("success");
+                setResponseMessage("User account successfully created.");
+                setOpenAlert(true);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                setSeverity("error");
+                setResponseMessage("There was an error creating user account.");
+                setOpenAlert(true);
+            });
+    };
 
     useEffect(() => {
         if (isSubmitTriggered && validate()) {
-            console.log(`VALIDATION SUCCESS! SENDING POST!`);
             sendRequest();
         }
         setIsSubmitTriggered(false);
@@ -168,14 +189,13 @@ const CreateUserForm: React.FC = () => {
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        console.log(`SUBMIT TRIGGERED!`);
         e.preventDefault();
         validate();
         setIsSubmitTriggered(true);
     };
 
     const handleCancel = () => {
-        console.log("Cancel");
+        window.location.reload();
     };
 
     const setBirthdate = ({
@@ -350,6 +370,20 @@ const CreateUserForm: React.FC = () => {
                     </Grid>
                 </Grid>
             </form>
+            <Snackbar
+                open={openAlert}
+                autoHideDuration={6000}
+                onClose={handleClose}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity={severity}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {responseMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };
