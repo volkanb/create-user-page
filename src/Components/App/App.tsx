@@ -1,11 +1,13 @@
 import React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../../theme';
 import CreateUserForm from '../CreateUserForm/CreateUserForm';
 
 function App() {
     return (
-        <div className="App">
+        <ThemeProvider theme={theme}>
             <CreateUserForm/>
-        </div>
+        </ThemeProvider>
     );
 }
 
