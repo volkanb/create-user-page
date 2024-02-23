@@ -14,17 +14,19 @@ interface Birthdate {
     year: number | undefined;
 }
 
-const BirthdateSelector: React.FC = () => {
+interface IBirthdateSelectorProps {
+    birthdate: Birthdate;
+    setBirthdateCallback: ({ day, month, year }: Birthdate) => void;
+}
+
+const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
+    birthdate,
+    setBirthdateCallback,
+}: IBirthdateSelectorProps) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
     const currentDay = currentDate.getDate();
-
-    const [birthdate, setBirthdate] = useState<Birthdate>({
-        day: undefined,
-        month: undefined,
-        year: undefined,
-    });
 
     const daysInMonth = (
         month: number | undefined,
@@ -41,7 +43,7 @@ const BirthdateSelector: React.FC = () => {
             birthdate.month &&
             birthdate.month > currentMonth
         ) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 year: currentYear - 1,
                 day: selectedDay,
@@ -54,13 +56,13 @@ const BirthdateSelector: React.FC = () => {
             selectedDay > currentDay
         ) {
             const maxDay = daysInMonth(birthdate.month, currentYear - 1);
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 year: currentYear - 1,
-                day: (selectedDay > maxDay) ? maxDay : selectedDay,
+                day: selectedDay > maxDay ? maxDay : selectedDay,
             });
         } else {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 day: selectedDay,
             });
@@ -76,14 +78,14 @@ const BirthdateSelector: React.FC = () => {
             selectedMonth > currentMonth
         ) {
             if (birthdate.day) {
-                setBirthdate({
+                setBirthdateCallback({
                     ...birthdate,
                     month: selectedMonth,
                     year: currentYear - 1,
                     day: birthdate.day > maxDay ? maxDay : birthdate.day,
                 });
             } else {
-                setBirthdate({
+                setBirthdateCallback({
                     ...birthdate,
                     month: selectedMonth,
                     year: currentYear - 1,
@@ -96,20 +98,20 @@ const BirthdateSelector: React.FC = () => {
             birthdate.day &&
             birthdate.day > currentDay
         ) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 day: currentDay,
                 month: selectedMonth,
                 year: currentYear - 1,
             });
         } else if (birthdate.day && birthdate.day > maxDay) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 day: maxDay,
                 month: selectedMonth,
             });
         } else {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 month: selectedMonth,
             });
@@ -126,7 +128,7 @@ const BirthdateSelector: React.FC = () => {
             birthdate.day &&
             birthdate.day > currentDay
         ) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 day: currentDay,
                 month: currentMonth,
@@ -137,19 +139,19 @@ const BirthdateSelector: React.FC = () => {
             birthdate.month &&
             birthdate.month > currentMonth
         ) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 month: currentMonth,
                 year: selectedYear,
             });
         } else if (birthdate.day && birthdate.day > maxDay) {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 day: maxDay,
                 year: selectedYear,
             });
         } else {
-            setBirthdate({
+            setBirthdateCallback({
                 ...birthdate,
                 year: selectedYear,
             });

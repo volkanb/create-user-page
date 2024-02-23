@@ -7,14 +7,15 @@ import {
     Container,
     Paper,
 } from "@mui/material";
+import BirthdateSelector from "../BirthdateSelector/BirthdateSelector";
 
 interface User {
     fullName: string;
     contactNumber: string;
     birthdate: {
-        day: string;
-        month: string;
-        year: string;
+        day: number | undefined;
+        month: number | undefined;
+        year: number | undefined;
     };
     emailAddress: string;
     password: string;
@@ -26,9 +27,9 @@ const CreateUserForm: React.FC = () => {
         fullName: "",
         contactNumber: "",
         birthdate: {
-            day: "",
-            month: "",
-            year: "",
+            day: undefined,
+            month: undefined,
+            year: undefined,
         },
         emailAddress: "",
         password: "",
@@ -49,9 +50,24 @@ const CreateUserForm: React.FC = () => {
         });
     };
 
+    const setBirthdate = ({day, month, year}: {
+        day: number | undefined,
+        month: number | undefined,
+        year: number | undefined
+    }) => {
+        setUser({
+            ...user,
+            birthdate: {
+                day,
+                month,
+                year,
+            },
+        });
+    };
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        console.log(user); // You can handle form submission here
         e.preventDefault();
+        console.log(user); // You can handle form submission here
     };
 
     const handleCancel = () => {
@@ -106,7 +122,8 @@ const CreateUserForm: React.FC = () => {
                             <Typography variant="subtitle2" gutterBottom>
                                 Birthdate
                             </Typography>
-                            <Grid container spacing={2}>
+                            <BirthdateSelector birthdate= {user.birthdate} setBirthdateCallback={setBirthdate}/>
+                            {/* <Grid container spacing={2}>
                                 <Grid item xs={4}>
                                     <TextField
                                         label="Day"
@@ -152,7 +169,7 @@ const CreateUserForm: React.FC = () => {
                                         required
                                     />
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="subtitle2" gutterBottom>
