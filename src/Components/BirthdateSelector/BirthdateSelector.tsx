@@ -201,6 +201,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                 <FormControl fullWidth>
                     <InputLabel>Day</InputLabel>
                     <Select
+                        label="Day"
+                        name="day"
                         value={birthdate.day ? birthdate.day : ""}
                         onChange={handleDayChange}
                     >
@@ -212,6 +214,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                 <FormControl fullWidth>
                     <InputLabel>Month</InputLabel>
                     <Select
+                        label="Month"
+                        name="month"
                         value={birthdate.month ? birthdate.month : ""}
                         onChange={handleMonthChange}
                     >
@@ -223,6 +227,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                 <FormControl fullWidth>
                     <InputLabel>Year</InputLabel>
                     <Select
+                        label="Year"
+                        name="year"
                         value={birthdate.year ? birthdate.year : ""}
                         onChange={handleYearChange}
                     >
