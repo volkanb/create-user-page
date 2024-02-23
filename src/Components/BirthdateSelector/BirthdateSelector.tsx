@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { MenuItem, FormControl, Grid, TextField } from "@mui/material";
 
 interface Birthdate {
@@ -8,15 +8,17 @@ interface Birthdate {
 }
 
 interface IBirthdateSelectorProps {
-    birthdate: Birthdate;
-    setBirthdateCallback: ({ day, month, year }: Birthdate) => void;
-    isBirthdateInvalid: boolean;
+    birthdate: Birthdate,
+    setBirthdateCallback: ({ day, month, year }: Birthdate) => void,
+    isBirthdateInvalid: boolean,
+    setIsBirthdateInvalidCallback: Dispatch<SetStateAction<boolean>>,
 }
 
 const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
     birthdate,
     setBirthdateCallback,
     isBirthdateInvalid,
+    setIsBirthdateInvalidCallback,
 }: IBirthdateSelectorProps) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -202,6 +204,9 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                         onChange={handleDayChange}
                         error={isBirthdateInvalid}
                         helperText={isBirthdateInvalid && "Required!"}
+                        onFocus={() => (
+                            setIsBirthdateInvalidCallback(false)
+                        )}
                     >
                         {renderDays()}
                     </TextField>
@@ -217,6 +222,9 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                         onChange={handleMonthChange}
                         error={isBirthdateInvalid}
                         helperText={isBirthdateInvalid && "Required!"}
+                        onFocus={() => (
+                            setIsBirthdateInvalidCallback(false)
+                        )}
                     >
                         {renderMonths()}
                     </TextField>
@@ -232,6 +240,9 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
                         onChange={handleYearChange}
                         error={isBirthdateInvalid}
                         helperText={isBirthdateInvalid && "Required!"}
+                        onFocus={() => (
+                            setIsBirthdateInvalidCallback(false)
+                        )}
                     >
                         {renderYears()}
                     </TextField>
