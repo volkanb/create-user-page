@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-    Grid,
-    SelectChangeEvent,
-} from "@mui/material";
+import React from "react";
+import { MenuItem, FormControl, Grid, TextField } from "@mui/material";
 
 interface Birthdate {
     day: number | undefined;
@@ -17,11 +10,13 @@ interface Birthdate {
 interface IBirthdateSelectorProps {
     birthdate: Birthdate;
     setBirthdateCallback: ({ day, month, year }: Birthdate) => void;
+    isBirthdateInvalid: boolean;
 }
 
 const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
     birthdate,
     setBirthdateCallback,
+    isBirthdateInvalid,
 }: IBirthdateSelectorProps) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -35,8 +30,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
         return !month || !year ? 31 : new Date(year, month, 0).getDate();
     };
 
-    const handleDayChange = (event: SelectChangeEvent<number>) => {
-        const selectedDay = event.target.value as number;
+    const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedDay = parseInt(event.target.value);
         if (
             birthdate.year &&
             birthdate.year >= currentYear &&
@@ -69,8 +64,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
         }
     };
 
-    const handleMonthChange = (event: SelectChangeEvent<number>) => {
-        const selectedMonth = event.target.value as number;
+    const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedMonth = parseInt(event.target.value);
         const maxDay = daysInMonth(selectedMonth, birthdate.year);
         if (
             birthdate.year &&
@@ -118,8 +113,8 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
         }
     };
 
-    const handleYearChange = (event: SelectChangeEvent<number>) => {
-        const selectedYear = event.target.value as number;
+    const handleYearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedYear = parseInt(event.target.value);
         const maxDay = daysInMonth(birthdate.month, selectedYear);
         if (
             selectedYear >= currentYear &&
@@ -199,41 +194,47 @@ const BirthdateSelector: React.FC<IBirthdateSelectorProps> = ({
         <Grid container spacing={2}>
             <Grid item xs={4}>
                 <FormControl fullWidth>
-                    <InputLabel>Day</InputLabel>
-                    <Select
+                    <TextField
+                        select
                         label="Day"
                         name="day"
                         value={birthdate.day ? birthdate.day : ""}
                         onChange={handleDayChange}
+                        error={isBirthdateInvalid}
+                        helperText={isBirthdateInvalid && "Required!"}
                     >
                         {renderDays()}
-                    </Select>
+                    </TextField>
                 </FormControl>
             </Grid>
             <Grid item xs={4}>
                 <FormControl fullWidth>
-                    <InputLabel>Month</InputLabel>
-                    <Select
+                    <TextField
+                        select
                         label="Month"
                         name="month"
                         value={birthdate.month ? birthdate.month : ""}
                         onChange={handleMonthChange}
+                        error={isBirthdateInvalid}
+                        helperText={isBirthdateInvalid && "Required!"}
                     >
                         {renderMonths()}
-                    </Select>
+                    </TextField>
                 </FormControl>
             </Grid>
             <Grid item xs={4}>
                 <FormControl fullWidth>
-                    <InputLabel>Year</InputLabel>
-                    <Select
+                    <TextField
+                        select
                         label="Year"
                         name="year"
                         value={birthdate.year ? birthdate.year : ""}
                         onChange={handleYearChange}
+                        error={isBirthdateInvalid}
+                        helperText={isBirthdateInvalid && "Required!"}
                     >
                         {renderYears()}
-                    </Select>
+                    </TextField>
                 </FormControl>
             </Grid>
         </Grid>
