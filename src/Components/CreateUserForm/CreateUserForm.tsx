@@ -8,6 +8,12 @@ import {
     Paper,
 } from "@mui/material";
 import BirthdateSelector from "../BirthdateSelector/BirthdateSelector";
+import {
+    validEmail,
+    validFullName,
+    validPassword,
+    validPhone,
+} from "../../regex";
 
 interface User {
     fullName: string;
@@ -35,25 +41,107 @@ const CreateUserForm: React.FC = () => {
         password: "",
         confirmPassword: "",
     });
+    const [isFullNameInvalid, setIsFullNameInvalid] = useState(false);
+    const [isContactNumberInvalid, setIsContactNumberInvalid] = useState(false);
+    const [isBirthdateInvalid, setIsBirthdateInvalid] = useState(false);
+    const [isEmailInvalid, setIsEmailInvalid] = useState(false);
+    const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
+    const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] =
+        useState(false);
+
+    const validate = () => {
+        validateFullName(user.fullName);
+        validateContactNumber(user.contactNumber);
+        validateBirthdate(user.birthdate);
+        validateEmail(user.emailAddress);
+        validatePassword(user.password);
+        validateConfirmPassword(user.confirmPassword);
+        return !(
+            isFullNameInvalid ||
+            isContactNumberInvalid ||
+            isBirthdateInvalid ||
+            isEmailInvalid ||
+            isPasswordInvalid ||
+            isConfirmPasswordInvalid
+        );
+    };
+
+    const validateFullName = (userFullName: string) => {
+        if (userFullName !== "" && validFullName.test(userFullName)) {
+            setIsFullNameInvalid(false);
+            return true;
+        } else {
+            setIsFullNameInvalid(true);
+            return false;
+        }
+    };
+
+    const validateContactNumber = (contactNumber: string) => {
+        if (contactNumber !== "" && validPhone.test(contactNumber)) {
+            setIsContactNumberInvalid(false);
+            return true;
+        } else {
+            setIsContactNumberInvalid(true);
+            return false;
+        }
+    };
+
+    const validateBirthdate = (birthdate: {
+        day: number | undefined;
+        month: number | undefined;
+        year: number | undefined;
+    }) => {
+        if (birthdate.day && birthdate.month && birthdate.year) {
+            setIsBirthdateInvalid(false);
+            return true;
+        } else {
+            setIsBirthdateInvalid(true);
+            return false;
+        }
+    };
+
+    const validateEmail = (email: string) => {
+        if (email !== "" && validEmail.test(email)) {
+            setIsEmailInvalid(false);
+            return true;
+        } else {
+            setIsEmailInvalid(true);
+            return false;
+        }
+    };
+
+    const validatePassword = (password: string) => {
+        if (password !== "" && validPassword.test(password)) {
+            setIsPasswordInvalid(false);
+            return true;
+        } else {
+            setIsPasswordInvalid(true);
+            return false;
+        }
+    };
+
+    const validateConfirmPassword = (confirmPassword: string) => {
+        if (confirmPassword !== "" && confirmPassword === user.password) {
+            setIsConfirmPasswordInvalid(false);
+            return true;
+        } else {
+            setIsConfirmPasswordInvalid(true);
+            return false;
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
-    const handleDateChange = (fieldName: string, value: string) => {
-        setUser({
-            ...user,
-            birthdate: {
-                ...user.birthdate,
-                [fieldName]: value,
-            },
-        });
-    };
-
-    const setBirthdate = ({day, month, year}: {
-        day: number | undefined,
-        month: number | undefined,
-        year: number | undefined
+    const setBirthdate = ({
+        day,
+        month,
+        year,
+    }: {
+        day: number | undefined;
+        month: number | undefined;
+        year: number | undefined;
     }) => {
         setUser({
             ...user,
@@ -66,8 +154,12 @@ const CreateUserForm: React.FC = () => {
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        console.log(`SUBMIT TRIGGERED!`);
         e.preventDefault();
-        console.log(user); // You can handle form submission here
+        if (validate()) {
+            console.log(`VALIDATION SUCCESSFUL!`);
+            console.log(user); // You can handle form submission here
+        }
     };
 
     const handleCancel = () => {
@@ -75,16 +167,16 @@ const CreateUserForm: React.FC = () => {
     };
 
     return (
-        <Container 
+        <Container
             maxWidth="sm"
             style={{ marginTop: 30, marginBottom: 30 }}
-            sx={{ paddingX: { xs: 0 }}}
+            sx={{ paddingX: { xs: 0 } }}
         >
             <Typography
                 variant="h6"
                 align="left"
                 gutterBottom
-                sx={{ paddingLeft: { xs: 2 }}}
+                sx={{ paddingLeft: { xs: 2 } }}
             >
                 Create User Account
             </Typography>
@@ -97,11 +189,16 @@ const CreateUserForm: React.FC = () => {
                             </Typography>
                             <TextField
                                 fullWidth
-                                label="Full Name"
+                                label="Full Name*"
                                 name="fullName"
                                 value={user.fullName}
                                 onChange={handleChange}
-                                required
+                                error={isFullNameInvalid}
+                                helperText={
+                                    isFullNameInvalid &&
+                                    "Required full name with letters and no symbols!"
+                                }
+                                onFocus={() => setIsFullNameInvalid(false)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -110,66 +207,30 @@ const CreateUserForm: React.FC = () => {
                             </Typography>
                             <TextField
                                 fullWidth
-                                label="Contact Number"
+                                label="Contact Number*"
                                 name="contactNumber"
-                                type="number"
                                 value={user.contactNumber}
                                 onChange={handleChange}
-                                required
+                                error={isContactNumberInvalid}
+                                helperText={
+                                    isContactNumberInvalid &&
+                                    "Required valid phone number with ten digits(no symbols, space or letters)!"
+                                }
+                                onFocus={() => setIsContactNumberInvalid(false)}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="subtitle2" gutterBottom>
                                 Birthdate
                             </Typography>
-                            <BirthdateSelector birthdate= {user.birthdate} setBirthdateCallback={setBirthdate}/>
-                            {/* <Grid container spacing={2}>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        label="Day"
-                                        name="day"
-                                        type="number"
-                                        value={user.birthdate.day}
-                                        onChange={(e) =>
-                                            handleDateChange(
-                                                "day",
-                                                e.target.value
-                                            )
-                                        }
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        label="Month"
-                                        name="month"
-                                        type="number"
-                                        value={user.birthdate.month}
-                                        onChange={(e) =>
-                                            handleDateChange(
-                                                "month",
-                                                e.target.value
-                                            )
-                                        }
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        label="Year"
-                                        name="year"
-                                        type="number"
-                                        value={user.birthdate.year}
-                                        onChange={(e) =>
-                                            handleDateChange(
-                                                "year",
-                                                e.target.value
-                                            )
-                                        }
-                                        required
-                                    />
-                                </Grid>
-                            </Grid> */}
+                            <BirthdateSelector
+                                birthdate={user.birthdate}
+                                setBirthdateCallback={setBirthdate}
+                                isBirthdateInvalid={isBirthdateInvalid}
+                                setIsBirthdateInvalidCallback={
+                                    setIsBirthdateInvalid
+                                }
+                            />
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="subtitle2" gutterBottom>
@@ -177,12 +238,16 @@ const CreateUserForm: React.FC = () => {
                             </Typography>
                             <TextField
                                 fullWidth
-                                label="Email Address"
+                                label="Email Address*"
                                 name="emailAddress"
-                                type="email"
                                 value={user.emailAddress}
                                 onChange={handleChange}
-                                required
+                                error={isEmailInvalid}
+                                helperText={
+                                    isEmailInvalid &&
+                                    "Required valid email address!"
+                                }
+                                onFocus={() => setIsEmailInvalid(false)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -191,12 +256,17 @@ const CreateUserForm: React.FC = () => {
                             </Typography>
                             <TextField
                                 fullWidth
-                                label="Password"
+                                label="Password*"
                                 name="password"
                                 type="password"
                                 value={user.password}
                                 onChange={handleChange}
-                                required
+                                error={isPasswordInvalid}
+                                helperText={
+                                    isPasswordInvalid &&
+                                    "Required, exactly 8 characters(lowercase letters, uppercase letters and numbers)!"
+                                }
+                                onFocus={() => setIsPasswordInvalid(false)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -205,17 +275,29 @@ const CreateUserForm: React.FC = () => {
                             </Typography>
                             <TextField
                                 fullWidth
-                                label="Confirm Password"
+                                label="Confirm Password*"
                                 name="confirmPassword"
                                 type="password"
                                 value={user.confirmPassword}
                                 onChange={handleChange}
-                                required
+                                error={isConfirmPasswordInvalid}
+                                helperText={
+                                    isConfirmPasswordInvalid &&
+                                    "Required, must be the same as the password!"
+                                }
+                                onFocus={() =>
+                                    setIsConfirmPasswordInvalid(false)
+                                }
                             />
                         </Grid>
                     </Grid>
                 </Paper>
-                <Grid container spacing={2} justifyContent="center" style={{ marginTop: 20 }}>
+                <Grid
+                    container
+                    spacing={2}
+                    justifyContent="center"
+                    style={{ marginTop: 20 }}
+                >
                     <Grid item xs={11} sm={4}>
                         <Button
                             variant="outlined"
