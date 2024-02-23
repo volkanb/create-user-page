@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# A responsive 'Create User Account' page. Built with React, MUI and Axios.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Screenshots
+
+![Screenshot 2024-02-23 at 2 50 56 PM](https://github.com/volkanb/create-user-page/assets/5632196/a491be92-1358-4b8f-97fe-f9851848697e)
+![Screenshot 2024-02-23 at 2 55 03 PM](https://github.com/volkanb/create-user-page/assets/5632196/08be773b-456c-41e1-9367-76c7053a1dc9)
+![Screenshot 2024-02-23 at 2 54 44 PM](https://github.com/volkanb/create-user-page/assets/5632196/8c1e46a6-acd3-44f1-a868-acc2796e3b8d)
+![Screenshot 2024-02-23 at 2 52 52 PM](https://github.com/volkanb/create-user-page/assets/5632196/9daccf7e-7a1b-42f2-a41e-63669da11899)
+![Screenshot 2024-02-23 at 2 51 12 PM](https://github.com/volkanb/create-user-page/assets/5632196/df18ef0b-39da-418a-a1de-556587be046f)
+
 
 ## Available Scripts
 
@@ -14,33 +21,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Now, the page is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Licence
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+MIT
