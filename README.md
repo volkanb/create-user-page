@@ -2,12 +2,10 @@
 
 ## Screenshots
 
-![Screenshot 2024-02-23 at 2 50 56 PM](https://github.com/volkanb/create-user-page/assets/5632196/a491be92-1358-4b8f-97fe-f9851848697e)
-![Screenshot 2024-02-23 at 2 55 03 PM](https://github.com/volkanb/create-user-page/assets/5632196/08be773b-456c-41e1-9367-76c7053a1dc9)
-![Screenshot 2024-02-23 at 2 54 44 PM](https://github.com/volkanb/create-user-page/assets/5632196/8c1e46a6-acd3-44f1-a868-acc2796e3b8d)
-![Screenshot 2024-02-23 at 2 52 52 PM](https://github.com/volkanb/create-user-page/assets/5632196/9daccf7e-7a1b-42f2-a41e-63669da11899)
-![Screenshot 2024-02-23 at 2 51 12 PM](https://github.com/volkanb/create-user-page/assets/5632196/df18ef0b-39da-418a-a1de-556587be046f)
-
+![Screenshot 2024-02-23 at 3 11 17 PM](https://github.com/volkanb/create-user-page/assets/5632196/8059599e-0432-441a-992a-e454f000f7ef)
+![Screenshot 2024-02-23 at 3 15 06 PM](https://github.com/volkanb/create-user-page/assets/5632196/fe9b45d4-2fd2-4f76-a1ec-4e7f591da828)
+![Screenshot 2024-02-23 at 3 15 50 PM](https://github.com/volkanb/create-user-page/assets/5632196/7d6fde1d-03d0-4d4d-8327-bfffac52dd1c)
+![Screenshot 2024-02-23 at 3 17 13 PM](https://github.com/volkanb/create-user-page/assets/5632196/5d84ae65-aae7-4729-a20d-69f2595bb89a)
 
 ## Available Scripts
 
